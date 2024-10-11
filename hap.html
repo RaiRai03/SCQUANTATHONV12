@@ -1,0 +1,46 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QRNG Classifier</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>QRNG Classifier</h1>
+  <form>
+    <label for="input-data">Input QRNG Data:</label>
+    <textarea id="input-data" name="input-data"></textarea>
+    <button id="classify-btn">Classify</button>
+  </form>
+  <div id="result"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+<!-- styles.css -->
+body {
+  font-family: Arial, sans-serif;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+<!-- script.js -->
+const classifyBtn = document.getElementById('classify-btn');
+const inputData = document.getElementById('input-data');
+const resultDiv = document.getElementById('result');
+
+classifyBtn.addEventListener('click', async () => {
+  const data = inputData.value;
+  const response = await fetch('/classify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data }),
+  });
+  const result = await response.json();
+  resultDiv.innerText = `Classification Result: ${result}`;
+});
