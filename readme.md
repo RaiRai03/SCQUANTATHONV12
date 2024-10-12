@@ -8,6 +8,8 @@ In Stage 2, the classifier model is trained to classify whether the data is quan
 
 # Stage 3: Characterizing Noise and Fidelity
 In Stage 3, the focus was on resolving errors during the API training process from Step 2. Challenges included inputting data correctly into the API, debugging issues in VSCode, and managing file dependencies. The most complex task was setting up and integrating TensorFlow for the API, which required troubleshooting file management and ensuring compatibility with the development environment.
+
 # Stage 4: Pre-processing and Post-processing for High Entropy
+In Stage 4, the focus was on improving the quality of QRNG data by combining it with PRNG data and QRNG bits in real time. Stronger algorithms were applied to detect and enhance patterns. The data was validated for randomness using the NIST test suite, and quantum state tomography was employed to verify accuracy. The process involved analyzing the results, identifying potential patches or updates, and ensuring high-quality randomness for further applications.
 
 # Stage 5: Building High-Accuracy Classification Models for QRNG Verification
