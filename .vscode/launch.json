@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Q# Simulator",
+            "type": "qsharp",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/test.qs",  // Path to the Q# file
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "integratedTerminal",
+            "args": [],
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ]
+}

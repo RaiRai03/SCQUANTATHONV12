@@ -1,0 +1,41 @@
+namespace SCQUANTATHONV12 {
+    open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Canon;
+
+    // Assuming GenerateQuantumRandomNumber and Mean functions are already defined.
+
+    function Mean(results : Result[]) : Double {
+        let sum = 0.0;
+        for (result in results) {
+            sum += (result == One ? 1.0 : 0.0);
+        }
+        return sum / Length(results); // Use Length instead of results.Length
+    }
+
+    operation VerifyRandomness(numSamples : Int) : Unit {
+        mutable results = new Result[numSamples];
+        for (i in 0..numSamples - 1) {
+            set results w/= i <- GenerateQuantumRandomNumber(); // Corrected syntax
+        }
+
+        let mean = Mean(results);
+        mutable variance = 0.0;
+        for (result in results) {
+            let diff = (result == One ? 1.0 : 0.0) - mean;
+            set variance += diff * diff; // Corrected variance calculation (squaring the differences)
+        }
+        set variance /= Length(results); // Use Length instead of results.Length
+
+        // Output the results
+        Message($"Generated {numSamples} random numbers.");
+        Message($"Mean: {mean}");
+        Message($"Variance: {variance}");
+
+        // Check if the results are truly random
+        if (mean >= 0.45 && mean <= 0.55 && variance >= 0.2 && variance <= 0.3) {
+            Message("Results are likely quantum random numbers.");
+        } else {
+            Message("Results may be classical numbers.");
+        }
+    }
+}

@@ -1,0 +1,59 @@
+open Microsoft.Quantum.Intrinsic;
+open Microsoft.Quantum.Canon;
+
+namespace Quantum.Randomness {
+
+    // Function to generate a quantum random number
+    operation GenerateQuantumRandomNumber() : Result {
+        using (qubit = Qubit()) { // Using the correct syntax for qubit allocation
+            H(qubit); // Apply Hadamard gate to create superposition
+            let measurement = M(qubit); // Measure the qubit
+            Reset(qubit); // Reset the qubit after measurement
+            return measurement; // Return the measurement result
+        }
+    }
+
+    // Function to calculate the mean of results
+    function Mean(results : Result[]) : Double {
+        let sum = 0.0;
+        for (result in results) {
+            sum += (result == One ? 1.0 : 0.0);
+        }
+        return sum / Length(results); // Corrected Length usage
+    }
+
+    // Function to verify the randomness of the generated numbers
+    operation VerifyRandomness(numSamples : Int) : Unit {
+        mutable results = new Result[numSamples];
+        for (i in 0..numSamples - 1) {
+            set results w/= i <- GenerateQuantumRandomNumber(); // Corrected syntax
+        }
+
+        let mean = Mean(results);
+        mutable variance = 0.0;
+        for (result in results) {
+            let diff = (result == One ? 1.0 : 0.0) - mean;
+            set variance += diff * diff; // Corrected variance calculation
+        }
+        set variance /= Length(results); // Correct usage of Length
+
+        // Output the results
+        Message($"Generated {numSamples} random numbers.");
+        Message($"Mean: {mean}");
+        Message($"Variance: {variance}");
+
+        // Check if the results are likely quantum random numbers
+        if (mean >= 0.45 && mean <= 0.55 && variance >= 0.2 && variance <= 0.3) {
+            Message("Results are likely quantum random numbers.");
+        } else {
+            Message("Results may be classical numbers.");
+        }
+    }
+
+    // Entry point for the program
+    @EntryPoint()
+    operation Main() : Unit { // Changed Result to Unit
+        let numSamples = 100; // Number of random samples to generate
+        VerifyRandomness(numSamples); // Call the randomness verification
+    }
+}
